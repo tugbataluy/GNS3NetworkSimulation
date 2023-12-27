@@ -1,0 +1,18 @@
+[Unit]
+Description=nftables service
+After=syslog.target
+AssertPathExists=/etc/sysconfig/nftables
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/nft -f /etc/sysconfig/nftables
+ExecReload=/usr/sbin/nft -f /etc/sysconfig/nftables
+ExecStop=/usr/sbin/nft flush ruleset
+Environment=BOOTUP=serial
+Environment=CONSOLETYPE=serial
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=basic.target
